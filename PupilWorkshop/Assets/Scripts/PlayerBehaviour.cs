@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerBehaviour : MonoBehaviour
 {
+    float speed = 5;
 
     // Use this for initialization
     void Start()
@@ -17,13 +18,15 @@ public class PlayerBehaviour : MonoBehaviour
 
     void FixedUpdate()
     {
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            GetComponent<Rigidbody2D>().AddForce(Vector3.right * 10);
+            rb.velocity = new Vector2(speed, rb.velocity.y);
         }
-        if (Input.GetKey(KeyCode.LeftArrow))
+        else if (Input.GetKey(KeyCode.LeftArrow))
         {
-            GetComponent<Rigidbody2D>().AddForce(Vector3.left * 10);
+            rb.velocity = new Vector2(-speed, rb.velocity.y);
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
