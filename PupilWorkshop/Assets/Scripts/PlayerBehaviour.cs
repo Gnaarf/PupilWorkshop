@@ -13,9 +13,21 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-            transform.position += Vector3.right;
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-            transform.position += Vector3.right;
+    }
+
+    void FixedUpdate()
+    {
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            GetComponent<Rigidbody2D>().AddForce(Vector3.right * 10);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            GetComponent<Rigidbody2D>().AddForce(Vector3.left * 10);
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            GetComponent<Rigidbody2D>().AddForce(Vector3.up * 400);
+        }
     }
 }
