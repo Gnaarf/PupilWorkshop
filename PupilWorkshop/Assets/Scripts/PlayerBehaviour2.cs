@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerBehaviour : MonoBehaviour
+public class PlayerBehaviour2 : MonoBehaviour
 {
     public float speed;
     public bool fancy;
