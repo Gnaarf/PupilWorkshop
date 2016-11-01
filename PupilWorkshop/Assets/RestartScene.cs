@@ -22,7 +22,6 @@ public class RestartScene : MonoBehaviour
     {
         if (!firstFrame && Input.GetKeyDown(restartKey))
         {
-            Debug.Log("restart");
             UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         }
 
