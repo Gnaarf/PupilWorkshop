@@ -7,13 +7,18 @@ public class PlayerBehaviour : MonoBehaviour
     public GameObject weapon;
     public GameObject gameOver;
 
+    public bool spieler1 = true;
     int points;
     float speed = 40;
     float maxForce = 6;
     bool grounded = false;
     bool goingRight = false;
     bool blockInput = false;
-    Shootspawner shot;
+    public GameObject Waffe1;
+    public GameObject Waffe2;
+
+    Shootspawner schusswaffe;
+    Shootspawner wurfwaffe;
     Rigidbody2D rb;
     
 
@@ -24,7 +29,8 @@ public class PlayerBehaviour : MonoBehaviour
 
     void Awake()
     {
-        shot = GetComponentInChildren<Shootspawner>();
+        schusswaffe = Waffe1.GetComponent<Shootspawner>();
+        wurfwaffe = Waffe2.GetComponent<Shootspawner>();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -45,47 +51,99 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (!blockInput)
         {
+            if (spieler1)
+            { 
+                if (Input.GetKey(KeyCode.D))
+                {
+                    if (!goingRight)
+                    {
+                        goingRight = true;
+                        Vector3 newScale = transform.localScale;
+                        newScale.x *= -1;
+                        transform.localScale = newScale;
+                    }
+                    if (rb.velocity.x.CompareTo(maxForce) < 0)
+                    {
+                        rb.AddForce(Vector2.right * speed, ForceMode2D.Force);
+                    }
+                }
+                else if (Input.GetKey(KeyCode.A))
+                {
+                    if (goingRight)
+                    {
+                        goingRight = false;
+                        Vector3 newScale = transform.localScale;
+                        newScale.x *= -1;
+                        transform.localScale = newScale;
+                    }
+                    if (rb.velocity.x.CompareTo(-maxForce) > 0)
+                    {
+                        rb.AddForce(Vector2.left * speed, ForceMode2D.Force);
+                    }
+                }
+                if (Input.GetKeyDown(KeyCode.W) && grounded)
+                {
+                    rb.AddForce(Vector3.up * 500);
+                }
 
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                if (!goingRight)
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    goingRight = true;
-                    Vector3 newScale = transform.localScale;
-                    newScale.x *= -1;
-                    transform.localScale = newScale;
+                    schusswaffe.shoot();
                 }
-                if (rb.velocity.x.CompareTo(maxForce) < 0)
+                if (Input.GetKeyDown(KeyCode.E))
                 {
-                    rb.AddForce(Vector2.right * speed, ForceMode2D.Force);
+                    wurfwaffe.shoot();
                 }
-            }
-            else if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                if (goingRight)
-                {
-                    goingRight = false;
-                    Vector3 newScale = transform.localScale;
-                    newScale.x *= -1;
-                    transform.localScale = newScale;
-                }
-                if (rb.velocity.x.CompareTo(-maxForce) > 0)
-                {
-                    rb.AddForce(Vector2.left * speed, ForceMode2D.Force);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.UpArrow) && grounded)
-            {
-                rb.AddForce(Vector3.up * 500);
             }
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            else
             {
-                shot.shoot();
-            }
+                if (Input.GetKey(KeyCode.RightArrow))
+                {
+                    if (!goingRight)
+                    {
+                        goingRight = true;
+                        Vector3 newScale = transform.localScale;
+                        newScale.x *= -1;
+                        transform.localScale = newScale;
+                    }
+                    if (rb.velocity.x.CompareTo(maxForce) < 0)
+                    {
+                        rb.AddForce(Vector2.right * speed, ForceMode2D.Force);
+                    }
+                }
+                else if (Input.GetKey(KeyCode.LeftArrow))
+                {
+                    if (goingRight)
+                    {
+                        goingRight = false;
+                        Vector3 newScale = transform.localScale;
+                        newScale.x *= -1;
+                        transform.localScale = newScale;
+                    }
+                    if (rb.velocity.x.CompareTo(-maxForce) > 0)
+                    {
+                        rb.AddForce(Vector2.left * speed, ForceMode2D.Force);
+                    }
+                }
+                if (Input.GetKeyDown(KeyCode.UpArrow) && grounded)
+                {
+                    rb.AddForce(Vector3.up * 500);
+                }
 
-            shot.setGoingRight(goingRight);
+                if (Input.GetKeyDown(KeyCode.Keypad8))
+                {
+                    schusswaffe.shoot();
+                }
+                if (Input.GetKeyDown(KeyCode.Keypad9))
+                {
+                    wurfwaffe.shoot();
+                }
+
+            }
+        
         }
+
 
         else
         {
@@ -110,7 +168,8 @@ public class PlayerBehaviour : MonoBehaviour
             }
         }
 
-        shot.setGoingRight(goingRight);
+        schusswaffe.setGoingRight(goingRight);
+        wurfwaffe.setGoingRight(goingRight);
     }
 
     public void addPoints(int value)
